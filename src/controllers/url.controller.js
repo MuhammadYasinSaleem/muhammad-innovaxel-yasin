@@ -61,3 +61,36 @@ export const getOriginalUrl = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
+// PUT /shorten/:shortCode
+export const updateShortUrl = async (req, res) => {
+  const { shortCode } = req.params;
+  const { originalUrl } = req.body;
+
+  // Validate new URL
+  if (!originalUrl || !/^https?:\/\/.+/.test(originalUrl)) {
+    return res.status(400).json({ error: 'Invalid or missing URL' });
+  }
+
+  try {
+    const urlDoc = await Url.findOne({ shortCode });
+
+    if (!urlDoc) {
+      return res.status(404).json({ error: 'Short URL not found' });
+    }
+
+    urlDoc.originalUrl = originalUrl;
+    await urlDoc.save();
+
+    return res.status(200).json({
+      id: urlDoc._id,
+      originalUrl: urlDoc.originalUrl,
+      shortCode: urlDoc.shortCode,
+      updatedAt: urlDoc.updatedAt,
+    });
+  } catch (error) {
+    console.error('Error updating URL:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
