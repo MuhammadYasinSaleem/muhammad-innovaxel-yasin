@@ -112,3 +112,29 @@ export const deleteShortUrl = async (req, res) => {
   }
 };
 
+
+// GET /shorten/:shortCode/stats
+export const getUrlStats = async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const urlDoc = await Url.findOne({ shortCode });
+
+    if (!urlDoc) {
+      return res.status(404).json({ error: 'Short URL not found' });
+    }
+
+    return res.status(200).json({
+      id: urlDoc._id,
+      originalUrl: urlDoc.originalUrl,
+      shortCode: urlDoc.shortCode,
+      accessCount: urlDoc.accessCount,
+      createdAt: urlDoc.createdAt,
+      updatedAt: urlDoc.updatedAt,
+    });
+  } catch (error) {
+    console.error('Error fetching URL stats:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
