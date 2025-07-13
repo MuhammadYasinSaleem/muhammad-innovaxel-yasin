@@ -30,6 +30,7 @@ A simple and powerful Node.js + Express API for generating, retrieving, updating
 | Method | Endpoint                      | Description                  |
 |--------|-------------------------------|------------------------------|
 | POST   | `/shorten`                    | Create a new short URL       |
+| GET    | `/shorten`                    |Retrieve all stored URLs      |
 | GET    | `/shorten/:shortCode`         | Retrieve original URL        |
 | PUT    | `/shorten/:shortCode`         | Update the original URL      |
 | DELETE | `/shorten/:shortCode`         | Delete the short URL         |
