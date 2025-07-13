@@ -5,11 +5,6 @@ import { generateShortCode } from '../utils/shortener.js';
 export const createShortUrl = async (req, res) => {
   const { originalUrl } = req.body;
 
-  
-  if (!originalUrl || !/^https?:\/\/.+/.test(originalUrl)) {
-    return res.status(400).json({ error: 'Invalid or missing URL' });
-  }
-
   try {
     const shortCode = generateShortCode();
 
@@ -66,11 +61,6 @@ export const getOriginalUrl = async (req, res) => {
 export const updateShortUrl = async (req, res) => {
   const { shortCode } = req.params;
   const { originalUrl } = req.body;
-
-  // Validate new URL
-  if (!originalUrl || !/^https?:\/\/.+/.test(originalUrl)) {
-    return res.status(400).json({ error: 'Invalid or missing URL' });
-  }
 
   try {
     const urlDoc = await Url.findOne({ shortCode });
