@@ -1,4 +1,4 @@
-import Url from '../models/url.js';
+import Url from '../models/url.model.js';
 import { generateShortCode } from '../utils/shortener.js';
 
 // POST /shorten
