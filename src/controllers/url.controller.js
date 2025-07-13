@@ -32,3 +32,32 @@ export const createShortUrl = async (req, res) => {
     return res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+// GET /shorten/:shortCode
+export const getOriginalUrl = async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const urlDoc = await Url.findOne({ shortCode });
+
+    if (!urlDoc) {
+      return res.status(404).json({ error: 'Short URL not found' });
+    }
+
+    urlDoc.accessCount += 1;
+    await urlDoc.save();
+
+    return res.status(200).json({
+      id: urlDoc._id,
+      originalUrl: urlDoc.originalUrl,
+      shortCode: urlDoc.shortCode,
+      accessCount: urlDoc.accessCount,
+      createdAt: urlDoc.createdAt,
+      updatedAt: urlDoc.updatedAt,
+    });
+  } catch (error) {
+    console.error('Error retrieving original URL:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
