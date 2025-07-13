@@ -41,6 +41,15 @@ export const createShortUrl = async (req, res) => {
   }
 };
 
+export const getAllUrls = async (req, res) => {
+  try {
+    const urls = await Url.find().sort({ createdAt: -1 }); // newest first
+    res.status(200).json(urls);
+  } catch (error) {
+    console.error('Error fetching URLs:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
 
 // GET /shorten/:shortCode
 export const getOriginalUrl = async (req, res) => {
