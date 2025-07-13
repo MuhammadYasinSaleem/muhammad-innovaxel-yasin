@@ -26,6 +26,12 @@ app.get('/',(req,res)=>{
     res.send("URL Shortener is running")
 })
 
-app.listen(PORT,()=>{
-    console.log(`Server running on port ${PORT}`)
-})
+// Only run server if not in test mode
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export app for Supertest
+export default app;
