@@ -94,3 +94,21 @@ export const updateShortUrl = async (req, res) => {
   }
 };
 
+// DELETE /shorten/:shortCode
+export const deleteShortUrl = async (req, res) => {
+  const { shortCode } = req.params;
+
+  try {
+    const deleted = await Url.findOneAndDelete({ shortCode });
+
+    if (!deleted) {
+      return res.status(404).json({ error: 'Short URL not found' });
+    }
+
+    return res.status(204).send(); // No Content
+  } catch (error) {
+    console.error('Error deleting short URL:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
+
