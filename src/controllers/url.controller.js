@@ -6,6 +6,19 @@ export const createShortUrl = async (req, res) => {
   const { originalUrl } = req.body;
 
   try {
+    const existing = await Url.findOne({ originalUrl });
+
+    if (existing) {
+      return res.status(200).json({
+        message: 'Short URL already exists',
+        id: existing._id,
+        originalUrl: existing.originalUrl,
+        shortCode: existing.shortCode,
+        createdAt: existing.createdAt,
+        updatedAt: existing.updatedAt,
+      });
+    }
+
     const shortCode = generateShortCode();
 
     const newUrl = new Url({
@@ -95,7 +108,7 @@ export const deleteShortUrl = async (req, res) => {
       return res.status(404).json({ error: 'Short URL not found' });
     }
 
-    return res.status(204).send(); // No Content
+    return res.status(204).json({ message: 'URL deleted successfully'}); 
   } catch (error) {
     console.error('Error deleting short URL:', error);
     return res.status(500).json({ error: 'Server error' });
