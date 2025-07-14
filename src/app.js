@@ -8,10 +8,10 @@ import cors from "cors"
 dotenv.config()
 
 const app=express()
-const PORT=process.env.PORT || 3000
+const PORT=process.env.PORT || 3001
 
 app.use(cors({
-  origin: 'http://localhost:3001', 
+  origin: 'http://localhost:3000', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
